@@ -163,8 +163,12 @@ def run_a_schema(json_payload_str):
     # convert results
     html_results = []
     for result in results:
-        if hasattr(result, "_repr_html_"):
-            html_results.append(result._repr_html_())
-        else:
-            html_results.append("<div> object does not have a _repr_html </div>")
+        if isinstance(result, dict):
+            for task, output in result.items():
+                html_results.append(task)
+                if isinstance(output, list):
+                    for output_i in output:
+                        html_results.append(output_i)
+                else:
+                    html_results.append(output)
     return "".join(html_results)
